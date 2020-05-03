@@ -66,6 +66,7 @@ class TaskController extends Controller
          // dd($request->name ,$id);
         // DB::table('tasks')->where('id', $id)->update(['name' => $request->name, 'created_at' => now(),'updated_at' =>now()]);
        
+        
        $id = $request->id;
        $task = Task::find($request->id);
        $task->name = $request->name;
@@ -76,6 +77,72 @@ class TaskController extends Controller
        }
  
        return view('update', compact('id'));
+       
      }
-      //  return redirect('/'); 
+     public function createSuccess (Request $request)
+
+     {
+   
+         $this->validate($request,[ 'title' => 'required','details' => 'required' ]);
+         $items = Item::create($request->all());
+         return back()->with('success','Item created successfully!');
+         
+       // return redirect()->route('home') ->with('error','You have no permission for this page!');
+      // return redirect()->route('home')->with('warning',"Don't Open this link");
+     }
+     public function createEroor(Request $request)
+
+     {
+     
+        return redirect()->route('home')
+
+        ->with('error','You have no permission for this page!');
+     
+     }
+     public function createWarning (Request $request)
+
+{
+
+    return redirect()->route('home')
+
+            ->with('warning',"Don't Open this link");
+
+}
+public function createInfo(Request $request)
+
+{
+
+    $this->validate($request,[
+
+        'title' => 'required',
+
+        'details' => 'required'
+
+        ]);
+
+
+
+    $items = Item::create($request->all());
+
+
+
+    return back()->with('info','You added new items, follow next step!');
+
+}
+public function createValidationError(Request $request)
+
+{
+
+    $this->validate($request,[
+
+        'title' => 'required',
+
+        'details' => 'required'
+
+        ]);
+
+
+
+
+}
  }
